@@ -1,0 +1,75 @@
+# Prerequisites
+*.d
+
+# Object files
+*.o
+*.ko
+*.obj
+*.elf
+
+# Linker output
+*.ilk
+*.map
+*.exp
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Libraries
+*.lib
+*.a
+*.la
+*.lo
+
+# Shared objects (inc. Windows DLLs)
+*.dll
+*.so
+*.so.*
+*.dylib
+
+# Executables
+*.exe
+*.out
+*.app
+*.i*86
+*.x86_64
+*.hex
+
+# Debug files
+*.dSYM/
+*.su
+*.idb
+*.pdb
+
+# Kernel Module Compile Results
+*.mod*
+*.cmd
+.tmp_versions/
+modules.order
+Module.symvers
+Mkfile.old
+dkms.conf
+
+.vscode/
+.idea/
+/cmake-build-debug/
+out.bmp
+
+Imagery/*.bmp
+Digits-Only/
+Digits-Only2/
+
+src/Imagery/img_0*/
+
+main.glade~
+main
+tmp
+grid.result
+output_1
+output_2
+output_3
+output_4
+output_5
+output_6
+temp
