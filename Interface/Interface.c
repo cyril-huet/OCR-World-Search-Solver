@@ -265,7 +265,7 @@ int main(int argc, char *argv[])
     gtk_box_set_homogeneous(GTK_BOX(button_box), TRUE);
     gtk_box_pack_start(GTK_BOX(vbox), button_box, FALSE, FALSE, 0);
 
-    ajouter_un_boutton(button_box, "Insérer une image", G_CALLBACK(on_button_insert_clicked), window);
+    ajouter_un_boutton(button_box, "Insérer une images", G_CALLBACK(on_button_insert_clicked), window);
     ajouter_un_boutton(button_box, "Faire tourner", G_CALLBACK(on_button_rotate_clicked), NULL);
     ajouter_un_boutton(button_box, "Supprimer l'image", G_CALLBACK(on_button_remove_clicked), NULL);
     ajouter_un_boutton(button_box, "Noir et Blanc", G_CALLBACK(on_button_binary_clicked), NULL);
