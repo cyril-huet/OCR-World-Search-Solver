@@ -3,7 +3,7 @@ CC = gcc
 CFLAGS = `pkg-config --cflags gtk+-3.0`
 LIBS = `pkg-config --libs gtk+-3.0`
 TARGET = interface
-SRC = test.c
+SRC = Interface.c
 
 # Règle par défaut
 all: $(TARGET)

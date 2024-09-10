@@ -1,76 +1,22 @@
 #include <gtk/gtk.h>
 
-
 GtkWidget *image;
 gdouble angle = 0.0;
 gint max_width = 800;
 gint max_height = 600;
 guchar threshold = 128; 
 
-
-typedef struct {
-    guint8 r;
-    guint8 g;
-    guint8 b;
+typedef struct
+{
+    unsigned char r, g, b; // Canaux de couleur rouge, vert et bleu
 } Pixel;
 
-typedef struct {
-    int width;
-    int height;
-    Pixel **pixels;
+typedef struct
+{
+    int width;           // Largeur de l'image
+    int height;          // Hauteur de l'image
+    Pixel **pixels;      // Tableau de pixels
 } Image;
-
-
-
-Image* gdk_pixbuf_to_image(GdkPixbuf *pixbuf) {
-    int width = gdk_pixbuf_get_width(pixbuf);
-    int height = gdk_pixbuf_get_height(pixbuf);
-    int rowstride = gdk_pixbuf_get_rowstride(pixbuf);
-    int n_channels = gdk_pixbuf_get_n_channels(pixbuf);
-    guchar *pixels = gdk_pixbuf_get_pixels(pixbuf);
-
-    Image *image = malloc(sizeof(Image));
-    image->width = width;
-    image->height = height;
-    image->pixels = malloc(width * sizeof(Pixel*));
-
-    for (int i = 0; i < width; i++) {
-        image->pixels[i] = malloc(height * sizeof(Pixel));
-    }
-
-    for (int y = 0; y < height; y++) {
-        for (int x = 0; x < width; x++) {
-            guchar *px = pixels + y * rowstride + x * n_channels;
-            Pixel *pixel = &image->pixels[x][y];
-            pixel->r = px[0];
-            pixel->g = px[1];
-            pixel->b = px[2];
-        }
-    }
-
-    return image;
-}
-
-GdkPixbuf* image_to_gdk_pixbuf(Image *image) {
-    int width = image->width;
-    int height = image->height;
-
-    GdkPixbuf *pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, FALSE, 8, width, height);
-    guchar *pixels = gdk_pixbuf_get_pixels(pixbuf);
-    int rowstride = gdk_pixbuf_get_rowstride(pixbuf);
-
-    for (int y = 0; y < height; y++) {
-        for (int x = 0; x < width; x++) {
-            Pixel *pixel = &image->pixels[x][y];
-            guchar *px = pixels + y * rowstride + x * 3;
-            px[0] = pixel->r;
-            px[1] = pixel->g;
-            px[2] = pixel->b;
-        }
-    }
-
-    return pixbuf;
-}
 
 
 GdkPixbuf *resize_pixbuf_to_fit(GdkPixbuf *pixbuf)
@@ -90,33 +36,104 @@ GdkPixbuf *resize_pixbuf_to_fit(GdkPixbuf *pixbuf)
 }
 
 
-void BlackandWhite(Image *image) 
-{
-  
-    int Wid = image->width;
-    int Hei = image->height;
-    for(int i = 0; i < Wid ; i++) 
-    {
-        for(int j = 0; j < Hei ; j++) 
-        {
-            Pixel pixel = image->pixels[i][j];
+/*void BlackandWhite(GdkPixbuf *pixbuf) {
+    gint width = gdk_pixbuf_get_width(pixbuf);
+    gint height = gdk_pixbuf_get_height(pixbuf);
+    gint rowstride = gdk_pixbuf_get_rowstride(pixbuf);
+    gint n_channels = gdk_pixbuf_get_n_channels(pixbuf);
+    guchar *pixels = gdk_pixbuf_get_pixels(pixbuf);
 
-            if((pixel.r + pixel.b + pixel.g)/3 >= 127)
-            {
-                image->pixels[i][j].b = 255;
-                image->pixels[i][j].r = 255;
-                image->pixels[i][j].g = 255;
-            } 
-            else 
-            {
-                image->pixels[i][j].b = 0;
-                image->pixels[i][j].r = 0;
-                image->pixels[i][j].g = 0;
-            }
+    for (gint y = 0; y < height; y++) {
+        for (gint x = 0; x < width; x++) {
+            guchar *px = pixels + y * rowstride + x * n_channels;
+
+            guchar red = px[0];
+            guchar green = px[1];
+            guchar blue = px[2];
+            guchar gray = (red + green + blue) / 3;
+
+            guchar bw_color = (gray >= 130) ? 255 : 0;
+
+            px[0] = bw_color;
+            px[1] = bw_color;
+            px[2] = bw_color;
         }
-     }
+    }
+}*/
+
+Image *convert_gdkpixbuf_to_image(GdkPixbuf *pixbuf)
+{
+    int width = gdk_pixbuf_get_width(pixbuf);
+    int height = gdk_pixbuf_get_height(pixbuf);
+    int rowstride = gdk_pixbuf_get_rowstride(pixbuf);
+    int n_channels = gdk_pixbuf_get_n_channels(pixbuf);
+    guchar *pixels = gdk_pixbuf_get_pixels(pixbuf);
+
+    Image *image = malloc(sizeof(Image));
+    image->width = width;
+    image->height = height;
+    image->pixels = malloc(width * sizeof(Pixel *));
+
+    for (int w = 0; w < width; w++)
+    {
+        image->pixels[w] = malloc(height * sizeof(Pixel));
+        for (int h = 0; h < height; h++)
+        {
+            guchar *px = pixels + h * rowstride + w * n_channels;
+            image->pixels[w][h].r = px[0];
+            image->pixels[w][h].g = px[1];
+            image->pixels[w][h].b = px[2];
+        }
+    }
+    return image;
+}
+GdkPixbuf *convert_image_to_gdkpixbuf(Image *image)
+{
+    GdkPixbuf *pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, FALSE, 8, image->width, image->height);
+    int rowstride = gdk_pixbuf_get_rowstride(pixbuf);
+    int n_channels = gdk_pixbuf_get_n_channels(pixbuf);
+    guchar *pixels = gdk_pixbuf_get_pixels(pixbuf);
+
+    for (int w = 0; w < image->width; w++)
+    {
+        for (int h = 0; h < image->height; h++)
+        {
+            Pixel *pixel = &image->pixels[w][h];
+            guchar *px = pixels + h * rowstride + w * n_channels;
+            px[0] = pixel->r;
+            px[1] = pixel->g;
+            px[2] = pixel->b;
+        }
+    }
+    return pixbuf;
 }
 
+
+void BlackandWhite(Image *image)
+{
+    // Parcourt de chaque pixel de l'image
+    int width = image->width;
+    int height = image->height;
+
+    for (int w = 0; w < width; w++)
+    {
+        for (int h = 0; h < height; h++)
+        {
+            Pixel *pixel = &image->pixels[w][h];
+
+            // Calcul de la valeur moyenne (gris) des canaux de couleur
+            unsigned char gray = (pixel->r + pixel->g + pixel->b) / 3;
+
+            // Détermination du blanc ou noir basé sur le seuil
+            unsigned char bw_color = (gray >= 127) ? 255 : 0;
+
+            // Affecte la couleur blanche ou noire aux trois canaux
+            pixel->r = bw_color;
+            pixel->g = bw_color;
+            pixel->b = bw_color;
+        }
+    }
+}
 
 
 
@@ -248,26 +265,17 @@ void on_button_remove_clicked(GtkWidget *widget, gpointer data)
     gtk_image_set_from_pixbuf(GTK_IMAGE(image), NULL);
 }
 
-void on_button_bw_clicked(GtkWidget *widget, gpointer data) {
+void on_button_bw_clicked(GtkWidget *widget, gpointer data)
+{
     GdkPixbuf *pixbuf = gtk_image_get_pixbuf(GTK_IMAGE(image));
-    if (pixbuf != NULL) {
-        Image *img = gdk_pixbuf_to_image(pixbuf);
-        BlackandWhite(img);
-        GdkPixbuf *new_pixbuf = image_to_gdk_pixbuf(img);
-        GdkPixbuf *resized_pixbuf = resize_pixbuf_to_fit(new_pixbuf);
+    if (pixbuf != NULL)
+    {
+        (convert_gdkpixbuf_to_image(pixbuf));
+        GdkPixbuf *resized_pixbuf = resize_pixbuf_to_fit(pixbuf);
         gtk_image_set_from_pixbuf(GTK_IMAGE(image), resized_pixbuf);
-        g_object_unref(new_pixbuf);
         g_object_unref(resized_pixbuf);
-
-        // Free image memory
-        for (int i = 0; i < img->width; i++) {
-            free(img->pixels[i]);
-        }
-        free(img->pixels);
-        free(img);
     }
 }
-
 
 void on_button_binary_clicked(GtkWidget *widget, gpointer data)
 {
