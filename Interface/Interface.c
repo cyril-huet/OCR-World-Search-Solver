@@ -20,8 +20,6 @@ typedef struct {
     Pixel **pixels;
 } Image;
 
-
-
 Image* gdk_pixbuf_to_image(GdkPixbuf *pixbuf) {
     int width = gdk_pixbuf_get_width(pixbuf);
     int height = gdk_pixbuf_get_height(pixbuf);
