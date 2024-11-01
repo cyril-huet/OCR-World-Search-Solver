@@ -257,7 +257,7 @@ void on_button_bw_clicked(GtkWidget *widget, gpointer data) {
         g_object_unref(new_pixbuf);
         g_object_unref(resized_pixbuf);
 
-        // Free image memory
+        
         for (int i = 0; i < img->width; i++) {
             free(img->pixels[i]);
         }
