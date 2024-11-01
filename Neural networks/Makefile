@@ -9,11 +9,11 @@ all: $(EXEC_NEURAL_NETWORKS) $(EXEC_XOR)
 
 # Compile Neural_networks
 $(EXEC_NEURAL_NETWORKS): Neural_networks.c
-	$(CC) $(CFLAGS) -o $(EXEC_NEURAL_NETWORKS) Neural_networks.c
+	$(CC) $(CFLAGS) -o $(EXEC_NEURAL_NETWORKS) Neural_networks.c -lm
 
 # Compile XOR
 $(EXEC_XOR): XOR.c
-	$(CC) $(CFLAGS) -o $(EXEC_XOR) XOR.c
+	$(CC) $(CFLAGS) -o $(EXEC_XOR) XOR.c -lm
 
 # Clean up executable and debug files
 clean:
