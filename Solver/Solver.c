@@ -1,70 +1,72 @@
-#include <stdio.h> //pour printf
-#include <ctype.h> //pour le toupper
-#include <stdlib.h> //pour le EXIT_FAILURE
-#include <string.h> //pour utiliser strlen et avoir acces a la taille du mot
+#include <stdio.h> //for printf
+#include <ctype.h> //for toupper
+#include <stdlib.h> //for EXIT_FAILURE
+#include <string.h> //for strlen
 
 
-// Fonction pour vérifier si un mot rentre dans la matrice dans une direction donnée
-
-int peut_rentrer(int x, int y, int dx, int dy, int len, size_t nb_lignes, size_t nb_colonnes) 
+//function for checking whether a word enters the matrix in a given direction
+int peut_rentrer(int x, int y, int dx, int dy, int len, size_t nb_lignes, 
+size_t nb_colonnes) 
 {
     int nx = x + dx * (len - 1);
     int ny = y + dy * (len - 1);
 
     if(nx >= 0 && nx < nb_lignes && ny >= 0 && ny < nb_colonnes)
     {
-	    return 1; //true , le mot rentre
+	    return 1; //true , the word enters
     }
 
-    return 0; //false , le mot est trop grand
+    return 0; //false , the word is too big
 }
 
-// Fonction principale pour résoudre le mot croisé
+// Main fonction for solving the crossword
 
-int* solver(char mot[], char matrice[100][100], int nb_lignes, int nb_colonnes) //matrice defini a 100 car sinon ca fonctionne pas mais a changé pour l'opti je pense 
+int* solver(char mot[], char matrice[100][100], int nb_lignes, int nb_colonnes)
 {
 
-    	static int resultat[4] = {-1, -1, -1, -1}; // Initialisation des coordonnées de retour
-    	size_t len = strlen(mot); //def taille du mot recherché
+    	static int resultat[4] = {-1, -1, -1, -1}; 
+    	size_t len = strlen(mot);
     
-    // Directions pour parcourir la matrice : droite, gauche, haut, bas, et diagonales
+    // Matrix directions : right, left, up, down and diagonals
 
     int directions[8][2] = {
-        {0, 1},  // droite
-        {0, -1}, // gauche
-        {-1, 0}, // haut
-        {1, 0},  // bas
-        {1, 1},  // diagonale droite-bas
-        {1, -1}, // diagonale gauche-bas
-        {-1, 1}, // diagonale droite-haut
-        {-1, -1} // diagonale gauche-haut
+        {0, 1},  // right
+        {0, -1}, // left
+        {-1, 0}, // up
+        {1, 0},  // down
+        {1, 1},  // diagonal right-down
+        {1, -1}, // diagonal left-down
+        {-1, 1}, // diagonal right-up
+        {-1, -1} // diagonal left-up
     };
     
-    // Parcourir la matrice pour trouver la première lettre du mot
+    // Scqn the matrix to find the first letter of the word
 
     for (size_t i = 0; i < nb_lignes; i++) 
     {
         for (size_t j = 0; j < nb_colonnes; j++) 
 	{
-		//on cherche la premiere lettre
+		//search for the first letter
 
             if (matrice[i][j] == toupper(mot[0])) 
 	    { 
 		 
- 		    // Parcourir toutes les directions possibles
+ 		    //travel in all possible directions
 
                 for (int d = 0; d < 8; d++) 
 		{
                     int dx = directions[d][0];
                     int dy = directions[d][1];
 
-                    // Vérifier si le mot rentre dans la matrice dans cette direction pour l'opti ahah
+                    //check if the word fits into the matrix in this direction 
+//for optimization 
 
-                    if (peut_rentrer(i, j, dx, dy, len, nb_lignes, nb_colonnes) == 1) 
+                    if (peut_rentrer(i, j, dx, dy, len, nb_lignes, nb_colonnes)
+ == 1) 
 		    {
                         int match = 1; //bool true
 
-                        // Vérifier chaque lettre du mot dans cette direction
+                        //check each letter of the word in this direction
 
                         for (size_t k = 1; k < len; k++) 
 			{
@@ -77,14 +79,12 @@ int* solver(char mot[], char matrice[100][100], int nb_lignes, int nb_colonnes) 
                             }
                         }
 
-                        // Si toutes les lettres correspondent, on retourne les coordonnées
-
                         if (match == 1) 
 			{
-                            resultat[0] = i; //debut x
-                            resultat[1] = j; //debut y
-			    resultat[2] = i + dx * (len-1); //fin x
-			    resultat[3] = j + dy * (len-1); //fin de y
+                            resultat[0] = i; //start x
+                            resultat[1] = j; //start y
+			    resultat[2] = i + dx * (len-1); //end x
+			    resultat[3] = j + dy * (len-1); //end y
 
                             return resultat;
                         }
@@ -94,7 +94,7 @@ int* solver(char mot[], char matrice[100][100], int nb_lignes, int nb_colonnes) 
         }
     }
 
-    printf("Le mot n'est pas présent dans la matrice\n");
+    printf("The word is not present in the matrix\n");
     return resultat;
 }
 
@@ -111,11 +111,12 @@ int main(int argc, char* argv[])
 		printf("problème de fichier\n");
 	}
 
-	char matrice[100][100]; //a modifier pour mettre la taille de ma matrice
+	char matrice[100][100]; 
 	int nb_lignes = 0;
 	int nb_colonnes = 0;
 
-	while (fscanf(file, "%s", matrice[nb_lignes]) != EOF) //EOF == end of file
+	while (fscanf(file, "%s", matrice[nb_lignes]) != EOF) //EOF == end of 
+//file
 	{
 		nb_colonnes = strlen(matrice[nb_lignes]);
         	nb_lignes++;
@@ -126,7 +127,8 @@ int main(int argc, char* argv[])
     	char* mot = argv[2];
     	int* resultat = solver(mot, matrice, nb_lignes, nb_colonnes);
 
-    	printf("(%d, %d)(%d, %d)\n", resultat[0], resultat[1], resultat[2], resultat[3]);
+    	printf("(%d, %d)(%d, %d)\n", resultat[0], resultat[1], resultat[2], 
+resultat[3]);
 
     	return 0;
 }

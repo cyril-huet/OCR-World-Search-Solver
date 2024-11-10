@@ -1,1 +1,1 @@
-convert grid_only.pmg -colorspace Gray -depth 8 outpout_image.pmg
+convert grid_only.pgm -colorspace Gray -depth 8 outpout_image.pgm

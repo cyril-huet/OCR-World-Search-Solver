@@ -1,3 +1,17 @@
-OCR Word Search Solver :
+WORD SEARCH SOLVER - PROJET OCR
+================================
 
-    - L’objectif de ce projet est de réaliser un logiciel de type OCR (Optical Character Re      cognition) qui résout une grille de mots cachés.
+DESCRIPTION
+-----------
+Word Search Solver est un programme OCR (Reconnaissance Optique de Caractères) développé en C. 
+Il détecte et lit une grille de mots cachés à partir d'une image, puis recherche et surligne 
+les mots spécifiés. Ce projet utilise les bibliothèques SDL pour la gestion d'images et GTK 
+pour l'interface utilisateur.
+
+PRÉREQUIS
+---------
+- Langage : C (compilateur GCC ou autre)
+- Bibliothèques :
+  - SDL2 : pour la gestion d'images
+  - GTK : pour l'interface utilisateur
+  - string.h et autres bibliothèques C standard

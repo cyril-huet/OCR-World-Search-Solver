@@ -7,7 +7,9 @@
 #define LIST_COLOR 0, 0, 255 // blue for the word list
 
 
-//Grid detection in 3 steps, first we analyse the image and detect where the word list and letter grid are located. We save the two distinct parts in two different images
+//Grid detection in 3 steps, first we analyse the image and detect where the 
+//word list and letter grid are located. We save the two distinct parts in two 
+//different images
 
 
 //function for saving an image
@@ -19,107 +21,35 @@ void saveSurfaceAsImage(SDL_Surface* surface, const char* filename)
     }
 }
 
-float top (SDL_Surface* image)
-{
-	float res;
-	if(image->w == 735)
-	
-	{
-		res= 0.5;
-	}
-	else if(image->w == 684)
-	{
-		res= 0.5;
-	}
-	else
-	{
-		res=1.5;
-	}
-	return res;
-}
 
-float bottom (SDL_Surface* image)
-{
-	float res;
-	if(image->w == 735)
-	
-	{
-		res= 0.8;
-	}
-	else if(image->w == 684)
-	{
-		res= 0.5;
-	}
-	else
-	{
-		res=0.8;
-	}
-	return res;
-}
-
-float left (SDL_Surface* image)
-{
-
-	float res;
-	if(image->w == 735)
-	
-	{
-		res= 0.1;
-	}
-	else if(image->w == 684)
-	{
-		res= 1;
-	}
-	else
-	{
-		res=0.23;
-	}
-	return res;
-}
-
-float right (SDL_Surface* image)
-{
-
-	float res;
-	if(image->w == 735)
-	
-	{
-		res= 0.5;
-	}
-	else if(image->w == 684)
-	{
-		res= 0.5;
-	}
-	else
-	{
-		res=0.5;
-	}
-	return res;
-}
 
 //function that detects the word list on one side, and the grid on the other
 void detectAndDrawRegions(SDL_Surface* imageSurface) 
 {
-    SDL_Surface* graySurface = SDL_ConvertSurfaceFormat(imageSurface, SDL_PIXELFORMAT_ARGB8888, 0);
+    SDL_Surface* graySurface = SDL_ConvertSurfaceFormat(imageSurface, 
+SDL_PIXELFORMAT_ARGB8888, 0);
     if (graySurface == NULL) 
     {
         printf("Image conversion error : %s\n", SDL_GetError());
         return;
     }
 
-    SDL_Surface* outputSurface = SDL_CreateRGBSurface(0, graySurface->w, graySurface->h, 32, 0x00FF0000, 0x0000FF00, 0x000000FF, 0);
+    SDL_Surface* outputSurface = SDL_CreateRGBSurface(0, graySurface->w, 
+graySurface->h, 32, 0x00FF0000, 0x0000FF00, 0x000000FF, 0);
 
     // Step 1 : grayscale conversion
     for (int y = 0; y < graySurface->h; y++) 
     {
         for (int x = 0; x < graySurface->w; x++) 
 	{
-            Uint32 pixel = ((Uint32*)graySurface->pixels)[y * graySurface->w + x];
+            Uint32 pixel = ((Uint32*)graySurface->pixels)[y * graySurface->w + 
+x];
             Uint8 r, g, b, a;
             SDL_GetRGBA(pixel, graySurface->format, &r, &g, &b, &a);
 
             Uint8 gray = (r + g + b) / 3;
-            ((Uint32*)outputSurface->pixels)[y * outputSurface->w + x] = SDL_MapRGB(outputSurface->format, gray, gray, gray);
+            ((Uint32*)outputSurface->pixels)[y * outputSurface->w + x] = 
+SDL_MapRGB(outputSurface->format, gray, gray, gray);
         } 
     }
 
@@ -127,28 +57,41 @@ void detectAndDrawRegions(SDL_Surface* imageSurface)
     int* horizontalEdges = (int*)calloc(outputSurface->h, sizeof(int));
     int* verticalEdges = (int*)calloc(outputSurface->w, sizeof(int));
 
-    for (int y = 0; y < outputSurface->h - 1; y++) {
-        for (int x = 0; x < outputSurface->w; x++) {
-            Uint32 currentPixel = ((Uint32*)outputSurface->pixels)[y * outputSurface->w + x];
-            Uint32 nextPixel = ((Uint32*)outputSurface->pixels)[(y + 1) * outputSurface->w + x];
-                                                                                    Uint8 grayCurrent, grayNext;
-            SDL_GetRGB(currentPixel, outputSurface->format, &grayCurrent, &grayCurrent, &grayCurrent);
-            SDL_GetRGB(nextPixel, outputSurface->format, &grayNext, &grayNext, &grayNext);
+    for (int y = 0; y < outputSurface->h - 1; y++) 
+    {
+        for (int x = 0; x < outputSurface->w; x++) 
+	{
+            Uint32 currentPixel = ((Uint32*)outputSurface->pixels)[y * 
+outputSurface->w + x];
+            Uint32 nextPixel = ((Uint32*)outputSurface->pixels)[(y + 1) * 
+outputSurface->w + x];
+            Uint8 grayCurrent, grayNext;
+            SDL_GetRGB(currentPixel, outputSurface->format, &grayCurrent, 
+&grayCurrent, &grayCurrent);
+            SDL_GetRGB(nextPixel, outputSurface->format, &grayNext, &grayNext, 
+&grayNext);
 
-            if (abs(grayCurrent - grayNext) > 25) {                                     horizontalEdges[y]++;
-            }
-        }
+		if (abs(grayCurrent - grayNext) > 25) 
+		{
+			horizontalEdges[y]++;
+        	}
+    	}
     }
 
     for (int x = 0; x < outputSurface->w - 1; x++) 
     {
         for (int y = 0; y < outputSurface->h; y++) 
 	{
-            Uint32 currentPixel = ((Uint32*)outputSurface->pixels)[y * outputSurface->w + x];
-            Uint32 nextPixel = ((Uint32*)outputSurface->pixels)[y * outputSurface->w + (x + 1)];
+            Uint32 currentPixel = ((Uint32*)outputSurface->pixels)[y * 
+outputSurface->w + x];
+            Uint32 nextPixel = ((Uint32*)outputSurface->pixels)[y * 
+outputSurface->w + (x + 1)];
 
-            Uint8 grayCurrent, grayNext;                                            SDL_GetRGB(currentPixel, outputSurface->format, &grayCurrent, &grayCurrent, &grayCurrent);
-            SDL_GetRGB(nextPixel, outputSurface->format, &grayNext, &grayNext, &grayNext);
+            Uint8 grayCurrent, grayNext;
+            SDL_GetRGB(currentPixel, outputSurface->format, &grayCurrent, 
+&grayCurrent, &grayCurrent);
+            SDL_GetRGB(nextPixel, outputSurface->format, &grayNext, &grayNext, 
+&grayNext);
 
 	    if (abs(grayCurrent - grayNext) > 25) 
 	    {
@@ -157,14 +100,26 @@ void detectAndDrawRegions(SDL_Surface* imageSurface)
         }
     }
 
+    int grand = 735;
+    int petit = 684;
+
     // Step 3 : Determine precise grid borders
     int topLimit = 0, bottomLimit = outputSurface->h - 1;
     int leftLimit = 0, rightLimit = outputSurface->w - 1;
 
-    float haut= top(imageSurface);
-    float bas= bottom(imageSurface);
-    float gauche= left(imageSurface);
-    float droite= right(imageSurface);
+    float haut = 1.5;
+    float bas = 0.8;
+    float gauche = 0.23;
+    float droite = 0.5;
+
+    if(imageSurface->w == grand)
+    {
+ 	haut = 0.5; gauche = 0.1;
+    }
+    else if(imageSurface->w == petit)
+    {
+	haut = 0.5; bas = 0.5; gauche = 1.0;
+    }
 
     for (int y = 0; y < outputSurface->h; y++) 
     {
@@ -207,7 +162,8 @@ void detectAndDrawRegions(SDL_Surface* imageSurface)
     int leftEmptySpace = leftLimit;
     int rightEmptySpace = outputSurface->w - rightLimit - 1;
 
-    SDL_Rect gridRect = {leftLimit, topLimit, rightLimit - leftLimit, bottomLimit - topLimit};
+    SDL_Rect gridRect = {leftLimit, topLimit, rightLimit - leftLimit, 
+bottomLimit - topLimit};
     SDL_Rect listRect = {0, 0, 0, 0};
 
     if (bottomEmptySpace > 50 && bottomEmptySpace > topEmptySpace) {
@@ -233,8 +189,10 @@ void detectAndDrawRegions(SDL_Surface* imageSurface)
     }
 
     // Creation of surfaces to safeguard
-    SDL_Surface* gridSurface = SDL_CreateRGBSurface(0, gridRect.w, gridRect.h, 32, 0x00FF0000, 0x0000FF00, 0x000000FF, 0);
-    SDL_Surface* listSurface = SDL_CreateRGBSurface(0, listRect.w, listRect.h, 32, 0x00FF0000, 0x0000FF00, 0x000000FF, 0);
+    SDL_Surface* gridSurface = SDL_CreateRGBSurface(0, gridRect.w, gridRect.h, 
+32, 0x00FF0000, 0x0000FF00, 0x000000FF, 0);
+    SDL_Surface* listSurface = SDL_CreateRGBSurface(0, listRect.w, listRect.h, 
+32, 0x00FF0000, 0x0000FF00, 0x000000FF, 0);
 
     // Copy of regions in new surfaces
     SDL_BlitSurface(imageSurface, &gridRect, gridSurface, NULL);
@@ -253,13 +211,16 @@ void detectAndDrawRegions(SDL_Surface* imageSurface)
 }
 
 
-//Second step of our grid detection: now that we have our two parts separated, we'll cut out th unnecessary noise to obtain only our characters, we'll cut out the white outline or the animals...
+//Second step of our grid detection: now that we have our two parts separated, 
+//we'll cut out th unnecessary noise to obtain only our characters, we'll cut 
+//out the white outline or the animals...
 
 
 void detectAndDrawGrid(SDL_Surface* imageSurface)
 {
 
-    SDL_Surface* graySurface = SDL_ConvertSurfaceFormat(imageSurface, SDL_PIXELFORMAT_ARGB8888, 0);
+    SDL_Surface* graySurface = SDL_ConvertSurfaceFormat(imageSurface, 
+SDL_PIXELFORMAT_ARGB8888, 0);
 
     if (graySurface == NULL) 
     {
@@ -267,22 +228,26 @@ void detectAndDrawGrid(SDL_Surface* imageSurface)
 	    return;
     }
 
-    SDL_Surface* outputSurface = SDL_CreateRGBSurface(0, graySurface->w, graySurface->h, 32,0x00FF0000, 0x0000FF00, 0x000000FF, 0);
+    SDL_Surface* outputSurface = SDL_CreateRGBSurface(0, graySurface->w, 
+graySurface->h, 32,0x00FF0000, 0x0000FF00, 0x000000FF, 0);
 
     for (int y = 0; y < graySurface->h; y++) 
     {
 	    for (int x = 0; x < graySurface->w; x++) 
 	    {
-		    Uint32 pixel = ((Uint32*)graySurface->pixels)[y * graySurface->w + x];
+		    Uint32 pixel = ((Uint32*)graySurface->pixels)[y * 
+graySurface->w + x];
 		    Uint8 r, g, b, a;
 		    SDL_GetRGBA(pixel, graySurface->format, &r, &g, &b, &a);
 		    Uint8 gray = (r + g + b) / 3;
-		    ((Uint32*)outputSurface->pixels)[y * outputSurface->w + x] = SDL_MapRGB(outputSurface->format, gray, gray, gray);
+		    ((Uint32*)outputSurface->pixels)[y * outputSurface->w + x] 
+= SDL_MapRGB(outputSurface->format, gray, gray, gray);
 	    }
     }
 
 	//pre-treatment filter to reinforce grid lines
-	//use of a simple Sobel filter to reinforce horizontal and vertical contours
+	//use of a simple Sobel filter to reinforce horizontal and vertical 
+//contours
 	int kernelSize = 3;
 	int sobelKernelX[3][3] = 
 	{
@@ -297,7 +262,8 @@ void detectAndDrawGrid(SDL_Surface* imageSurface)
         	{1, 2, 1}
     	};
 
-	SDL_Surface* edgeSurface = SDL_CreateRGBSurface(0, outputSurface->w, outputSurface->h, 32, 0x00FF0000, 0x0000FF00, 0x000000FF, 0);
+	SDL_Surface* edgeSurface = SDL_CreateRGBSurface(0, outputSurface->w, 
+outputSurface->h, 32, 0x00FF0000, 0x0000FF00, 0x000000FF, 0);
 
 
     for (int y = 1; y < outputSurface->h - 1; y++) 
@@ -312,17 +278,20 @@ void detectAndDrawGrid(SDL_Surface* imageSurface)
 		{
                     int px = x + kx - 1;
                     int py = y + ky - 1;
-                    Uint32 pixel = ((Uint32*)outputSurface->pixels)[py * outputSurface->w + px];
+                    Uint32 pixel = ((Uint32*)outputSurface->pixels)[py * 
+outputSurface->w + px];
                     Uint8 grayValue;
-                    SDL_GetRGB(pixel, outputSurface->format, &grayValue, &grayValue, &grayValue);
-                                                                                            gx += sobelKernelX[ky][kx] * grayValue;
+                    SDL_GetRGB(pixel, outputSurface->format, &grayValue, 
+&grayValue, &grayValue);
+                    gx += sobelKernelX[ky][kx] * grayValue;
                     gy += sobelKernelY[ky][kx] * grayValue;
                 }
             }
 
             int gradient = abs(gx) + abs(gy);
             gradient = gradient > 255 ? 255 : gradient;
-            ((Uint32*)edgeSurface->pixels)[y * edgeSurface->w + x] = SDL_MapRGB(edgeSurface->format, gradient, gradient, gradient);
+            ((Uint32*)edgeSurface->pixels)[y * edgeSurface->w + x] = 
+SDL_MapRGB(edgeSurface->format, gradient, gradient, gradient);
         }
     }
 
@@ -337,11 +306,16 @@ void detectAndDrawGrid(SDL_Surface* imageSurface)
     {
         for (int x = 0; x < edgeSurface->w; x++) 
 	{
-            Uint32 currentPixel = ((Uint32*)edgeSurface->pixels)[y * edgeSurface->w + x];
-            Uint32 nextPixel = ((Uint32*)edgeSurface->pixels)[(y + 1) * edgeSurface->w + x];
+            Uint32 currentPixel = ((Uint32*)edgeSurface->pixels)[y * 
+edgeSurface->w + x];
+            Uint32 nextPixel = ((Uint32*)edgeSurface->pixels)[(y + 1) * 
+edgeSurface->w + x];
 
-            Uint8 grayCurrent, grayNext;                                            SDL_GetRGB(currentPixel, edgeSurface->format, &grayCurrent, &grayCurrent, &grayCurrent);
-            SDL_GetRGB(nextPixel, edgeSurface->format, &grayNext, &grayNext, &grayNext);
+            Uint8 grayCurrent, grayNext;
+            SDL_GetRGB(currentPixel, edgeSurface->format, &grayCurrent, 
+&grayCurrent, &grayCurrent);
+            SDL_GetRGB(nextPixel, edgeSurface->format, &grayNext, &grayNext, 
+&grayNext);
 
             if (abs(grayCurrent - grayNext) > edgeThreshold) 
 	    {
@@ -354,11 +328,16 @@ void detectAndDrawGrid(SDL_Surface* imageSurface)
     {
         for (int y = 0; y < edgeSurface->h; y++) 
 	{
-            Uint32 currentPixel = ((Uint32*)edgeSurface->pixels)[y * edgeSurface->w + x];
-            Uint32 nextPixel = ((Uint32*)edgeSurface->pixels)[y * edgeSurface->w + (x + 1)];
+            Uint32 currentPixel = ((Uint32*)edgeSurface->pixels)[y * 
+edgeSurface->w + x];
+            Uint32 nextPixel = ((Uint32*)edgeSurface->pixels)[y * 
+edgeSurface->w + (x + 1)];
 
-            Uint8 grayCurrent, grayNext;                                            SDL_GetRGB(currentPixel, edgeSurface->format, &grayCurrent, &grayCurrent, &grayCurrent);
-            SDL_GetRGB(nextPixel, edgeSurface->format, &grayNext, &grayNext, &grayNext);
+            Uint8 grayCurrent, grayNext;
+            SDL_GetRGB(currentPixel, edgeSurface->format, &grayCurrent, 
+&grayCurrent, &grayCurrent);
+            SDL_GetRGB(nextPixel, edgeSurface->format, &grayNext, &grayNext, 
+&grayNext);
 
             if (abs(grayCurrent - grayNext) > edgeThreshold) 
 	    {
@@ -407,10 +386,12 @@ void detectAndDrawGrid(SDL_Surface* imageSurface)
         }
     }
 
-    SDL_Rect gridRect = {leftLimit, topLimit, rightLimit - leftLimit, bottomLimit - topLimit};
+    SDL_Rect gridRect = {leftLimit, topLimit, rightLimit - leftLimit, 
+bottomLimit - topLimit};
 
     // Save detected grid
-    SDL_Surface* gridSurface = SDL_CreateRGBSurface(0, gridRect.w, gridRect.h, 32, 0x00FF0000, 0x0000FF00, 0x000000FF, 0);
+    SDL_Surface* gridSurface = SDL_CreateRGBSurface(0, gridRect.w, gridRect.h, 
+32, 0x00FF0000, 0x0000FF00, 0x000000FF, 0);
     SDL_BlitSurface(imageSurface, &gridRect, gridSurface, NULL);
     saveSurfaceAsImage(gridSurface, "grid_only.pgm");
 
@@ -422,7 +403,8 @@ void detectAndDrawGrid(SDL_Surface* imageSurface)
     free(verticalEdges);
 }
 
-//And finally, the last step will be used to fine_tune the imperfections to obtain the best possible grid detection.
+//And finally, the last step will be used to fine_tune the imperfections to 
+//obtain the best possible grid detection.
 
 void detectGridArea(SDL_Surface* imageSurface, SDL_Rect* gridRect) 
 {
@@ -498,8 +480,10 @@ int main(int argc, char** argv)
 	detectGridArea(IMG_Load("grid_only.pgm"), &gridRect);
 
 	// Creates a surface for the grid only
-	SDL_Surface* gridSurface = SDL_CreateRGBSurface(0, gridRect.w, gridRect.h, 32, 0x00FF0000, 0x0000FF00, 0x000000FF, 0);
-	SDL_BlitSurface(IMG_Load("grid_only.pgm"), &gridRect, gridSurface, NULL);
+	SDL_Surface* gridSurface = SDL_CreateRGBSurface(0, gridRect.w, 
+gridRect.h, 32, 0x00FF0000, 0x0000FF00, 0x000000FF, 0);
+	SDL_BlitSurface(IMG_Load("grid_only.pgm"), &gridRect, gridSurface, 
+NULL);
 
 	// saves the extracted grid for verification
 	saveSurfaceAsImage(gridSurface, "grid_only.pgm");
