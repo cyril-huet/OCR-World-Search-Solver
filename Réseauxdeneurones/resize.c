@@ -52,9 +52,7 @@ void augmenter_pixel(const char *image_path, int new_width, int new_height) {
     // Copier l'image originale sur la nouvelle surface
     if (SDL_BlitSurface(image, NULL, new_surface, &dest_rect) != 0) {
         fprintf(stderr, "Erreur lors de la copie de l'image: %s\n", SDL_GetError());
-    } else {
-        printf("Image copiée avec succès.\n");
-    }
+    } 
 
     // Supprimer l'ancien fichier
     if (remove(image_path) != 0) {
