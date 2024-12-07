@@ -1,0 +1,5 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     extraction_de_lettre
+relocations:     []
+...
