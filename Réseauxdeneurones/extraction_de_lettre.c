@@ -2,8 +2,8 @@
 #include <sys/types.h>
 
 
-#include "/opt/homebrew/Cellar/sdl2/2.30.9/include/SDL2/SDL.h"
-#include "/opt/homebrew/Cellar/sdl2_image/2.8.2_2/include/SDL2/SDL_image.h"
+#include "SDL2/SDL.h"
+#include "SDL2/SDL_image.h"
 
 
 #include <stdio.h>

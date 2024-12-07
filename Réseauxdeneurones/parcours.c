@@ -4,7 +4,7 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <sys/types.h>
-
+#include <stdint.h>
 #define THRESHOLD 128 // Seuil pour la binarisation
 #define LINE_TOLERANCE 10 // Tolérance pour regrouper les lettres dans une ligne
 

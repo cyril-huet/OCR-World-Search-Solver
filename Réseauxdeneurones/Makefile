@@ -1,17 +1,11 @@
 # Compiler et linker
 CC = gcc
 
-# Options pour les includes et les librairies
-INCLUDES = -I/opt/homebrew/Cellar/sdl2/2.30.9/include/SDL2 \
-           -I/opt/homebrew/Cellar/sdl2_image/2.8.2_2/include/SDL2 \
-           -I/opt/homebrew/Cellar/sdl2_gfx/1.0.4/include
 
-LIBS = -L/opt/homebrew/Cellar/sdl2_image/2.8.2_2/lib \
-       -L/opt/homebrew/Cellar/sdl2_gfx/1.0.4/lib \
-       -lSDL2 -lSDL2_image -lSDL2_gfx
+LIBS  =  -lSDL2 -lSDL2_image -lm
 
 # Options de compilation
-CFLAGS = -Wall -Wextra -g $(INCLUDES)
+CFLAGS = -Wall -Wextra -Werror
 LDFLAGS = $(LIBS)
 
 # Fichiers sources et exécutables
