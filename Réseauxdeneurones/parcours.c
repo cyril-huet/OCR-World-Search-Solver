@@ -59,13 +59,13 @@ void process_images_in_directory(const char *directory) {
 
         // Construire le chemin complet du fichier
         char file_path[FILE_PATH_BUFFER_SIZE];
-        if (snprintf(file_path, sizeof(file_path), "%s/%s", directory, entry->d_name) >= sizeof(file_path)) {
+        if ((size_t)snprintf(file_path, sizeof(file_path), "%s/%s", directory, entry->d_name) >= sizeof(file_path)) {
             fprintf(stderr, "Erreur: chemin de fichier trop long.\n");
             continue;
         }
 
         // Construire la commande ./resize "fichier" 28 28
-        if (snprintf(command, sizeof(command), "./resize \"%s\" 28 28", file_path) >= sizeof(command)) {
+        if ((size_t)snprintf(command, sizeof(command), "./resize \"%s\" 28 28", file_path) >= sizeof(command)) {
             fprintf(stderr, "Erreur: commande trop longue.\n");
             continue;
         }
@@ -83,6 +83,9 @@ void process_images_in_directory(const char *directory) {
 
 // Exemple de fonction main qui utilise ces outils
 int main(int argc, char *argv[]) {
+    (void)argc; // Supprime l'avertissement de variable inutilisée
+    (void)argv; // Supprime l'avertissement de variable inutilisée
+
     const char *output_directory = "images";
 
     // Créer le dossier "images" s'il n'existe pas
