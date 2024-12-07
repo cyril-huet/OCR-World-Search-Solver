@@ -20,7 +20,7 @@ int comparer(const void *a, const void *b) {
     if (fa->num1 != fb->num1) {
         return fa->num1 - fb->num1;
     }
-    // Comparaison sur num2 si num1 est égal
+    // Comparaison sur num2 si num1 est ?gal
     return fa->num2 - fb->num2;
 }
 
@@ -43,7 +43,7 @@ void trierFichiers(const char *nomFichier) {
         // Extraction de num1 et num2
         if (sscanf(ligne, "letter_grid_line%d_col%d.pgm", &num1, &num2) == 2) {
             strncpy(fichiers[nombreFichiers].nom, ligne, MAX_LINE_LENGTH - 1);
-            fichiers[nombreFichiers].nom[MAX_LINE_LENGTH - 1] = '\0'; // Sécurité
+            fichiers[nombreFichiers].nom[MAX_LINE_LENGTH - 1] = '\0'; // S?curit?
             fichiers[nombreFichiers].num1 = num1;
             fichiers[nombreFichiers].num2 = num2;
             nombreFichiers++;
@@ -61,7 +61,7 @@ void trierFichiers(const char *nomFichier) {
     // Tri des fichiers
     qsort(fichiers, nombreFichiers, sizeof(Fichier), comparer);
 
-    // Affichage des fichiers triés
+    // Affichage des fichiers tri?s
 }
 
 int main(int argc, char *argv[]) {

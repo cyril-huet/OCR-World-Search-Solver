@@ -220,7 +220,7 @@ int load_dataset(const char *dataset_path, double dataset[][IMAGE_SIZE][IMAGE_SI
             while ((subentry = readdir(subdir)) != NULL) {
                 if (strstr(subentry->d_name, ".pgm")) {
                     char filepath[1024]; // Augmenté à 1024
-                    if ((unsigned long int)§snprintf(filepath, sizeof(filepath), "%s/%s", subfolder, subentry->d_name) >= sizeof(filepath)) {
+                    if ((unsigned long int)snprintf(filepath, sizeof(filepath), "%s/%s", subfolder, subentry->d_name) >= sizeof(filepath)) {
                         fprintf(stderr, "Erreur : chemin de fichier trop long pour %s/%s\n", subfolder, subentry->d_name);
                         continue;
                     }
