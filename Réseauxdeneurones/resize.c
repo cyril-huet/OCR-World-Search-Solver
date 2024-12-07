@@ -18,7 +18,6 @@ void augmenter_pixel(const char *image_path, int new_width, int new_height) {
     }
 
     // Afficher les dimensions de l'image originale
-    printf("Dimensions de l'image originale : %d x %d\n", image->w, image->h);
 
     int original_width = image->w;
     int original_height = image->h;
@@ -69,9 +68,7 @@ void augmenter_pixel(const char *image_path, int new_width, int new_height) {
     // Sauvegarder la nouvelle image sous le même nom
     if (IMG_SavePNG(new_surface, image_path) != 0) {
         fprintf(stderr, "Erreur lors de l'enregistrement de l'image: %s\n", IMG_GetError());
-    } else {
-        printf("Image ajustée sauvegardée sous le nom '%s'\n", image_path);
-    }
+    } 
 
     // Libérer les ressources
     SDL_FreeSurface(image);

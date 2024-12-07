@@ -56,7 +56,6 @@ void convert_png_to_pgm(const char *png_path, const char *pgm_path) {
     fclose(pgm_file);
     SDL_FreeSurface(image);
 
-    printf("Image convertie: %s -> %s\n", png_path, pgm_path);
 }
 
 // Fonction pour parcourir le dossier "images" et convertir PNG -> PGM
@@ -93,9 +92,7 @@ void convert_images_in_directory(const char *directory) {
             // Supprimer le fichier PNG après conversion
             if (remove(png_path) != 0) {
                 fprintf(stderr, "Erreur lors de la suppression du fichier %s.\n", png_path);
-            } else {
-                printf("Fichier PNG supprimé: %s\n", png_path);
-            }
+            } 
         }
     }
 
@@ -124,7 +121,6 @@ int main() {
     IMG_Quit();
     SDL_Quit();
 
-    printf("Conversion terminée.\n");
     return EXIT_SUCCESS;
 }
 

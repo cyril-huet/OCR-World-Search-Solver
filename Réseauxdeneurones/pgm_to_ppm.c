@@ -62,7 +62,6 @@ void convert_pgm_to_ppm(const char *input_pgm, const char *output_ppm) {
     free(pgm_data);
     fclose(ppm_file);
 
-    printf("Conversion de %s en %s réussie.\n", input_pgm, output_ppm);
 }
 
 int main() {

@@ -73,16 +73,6 @@ void genererMatrice(const char *nomFichier) {
     qsort(fichiers, nombreFichiers, sizeof(Fichier), comparer);
 
     // Génération de la matrice
-    printf("Matrice :\n");
-    for (size_t i = 0; i < nombreFichiers; i++) {
-        printf("%c", fichiers[i].lettre);
-        if ((i + 1) % nombreColonnes == 0) {
-            printf("\n"); // Nouvelle ligne après chaque ligne complète
-        }
-    }
-    if (nombreFichiers % nombreColonnes != 0) {
-        printf("\n"); // Ajout d'une nouvelle ligne si nécessaire
-    }
 }
 
 int main(int argc, char *argv[]) {

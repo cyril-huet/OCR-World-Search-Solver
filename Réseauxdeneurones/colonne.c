@@ -152,7 +152,6 @@ int main(int argc, char *argv[]) {
     fprintf(output_file, "%d\n", columns);
     fclose(output_file);
 
-    printf("Le fichier letters.txt a été créé avec succès.\n");
 
     // Libère la mémoire
     free_image(img);

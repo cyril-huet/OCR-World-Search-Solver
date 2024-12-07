@@ -62,7 +62,6 @@ void copy_and_rename_first_file(const char *source_dir, const char *new_name) {
     fclose(source);
     fclose(destination);
 
-    printf("Fichier %s copié avec succès dans %s.\n", source_file_path, new_name);
 }
 
 int main(int argc, char *argv[]) {

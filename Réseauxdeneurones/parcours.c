@@ -71,7 +71,6 @@ void process_images_in_directory(const char *directory) {
         }
 
         // Exécuter la commande
-        printf("Exécution de la commande: %s\n", command);
         int ret = system(command);
         if (ret != 0) {
             fprintf(stderr, "Erreur: la commande \"%s\" a échoué avec le code %d.\n", command, ret);
@@ -94,7 +93,6 @@ int main(int argc, char *argv[]) {
     // Parcourir les images et redimensionner
     process_images_in_directory(output_directory);
 
-    printf("Traitement terminé.\n");
     return EXIT_SUCCESS;
 }
 

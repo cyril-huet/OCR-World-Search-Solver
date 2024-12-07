@@ -163,7 +163,6 @@ void save_weights(NeuralNetwork *nn, const char *filepath) {
     fwrite(nn->output_bias, sizeof(double), OUTPUT_NODES, file);
 
     fclose(file);
-    printf("Poids et biais sauvegardés dans le fichier : %s\n", filepath);
 }
 
 // Charger les poids et biais
@@ -186,7 +185,7 @@ void load_weights(NeuralNetwork *nn, const char *filepath) {
     fread(nn->output_bias, sizeof(double), OUTPUT_NODES, file);
 
     fclose(file);
-    printf("Poids et biais chargés depuis le fichier : %s\n", filepath);
+
 }
 
 
@@ -341,12 +340,9 @@ void test(NeuralNetwork *nn, double input[IMAGE_SIZE][IMAGE_SIZE]) {
     }
 
     // Afficher les résultats
-    printf("Classe prédite : %c avec probabilité %.2f\n", 'A' + predicted_class, max_probability);
 
-    // Optionnel : afficher toutes les probabilités pour les autres classes
-    for (int i = 0; i < OUTPUT_NODES; i++) {
-        printf("Classe %c : %.2f\n", 'A' + i, nn->output_layer[i]);
-    }
+
+
 }
 
 
@@ -396,7 +392,6 @@ void test_directory(NeuralNetwork *nn, const char *directory_path) {
 
     fclose(output_file);
     closedir(dir);
-    printf("Résultats écrits dans le fichier matrice.txt\n");
 }
 
 

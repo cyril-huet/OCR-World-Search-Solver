@@ -3,7 +3,6 @@
 
 // Fonction pour exécuter une commande shell
 void execute_command(const char *command) {
-    printf("Exécution de : %s\n", command);
     int ret = system(command);
     if (ret != 0) {
         fprintf(stderr, "Erreur lors de l'exécution de : %s\n", command);
@@ -40,7 +39,6 @@ int main() {
     // Étape 8 : Exécuter `./reseaux weights output.pgm images`
     execute_command("./reseaux weights output.pgm images");
     execute_command("./matrice letters.txt matrice.txt");
-    printf("Toutes les étapes ont été exécutées avec succès.\n");
     return EXIT_SUCCESS;
 }
 
