@@ -330,12 +330,10 @@ void test(NeuralNetwork *nn, double input[IMAGE_SIZE][IMAGE_SIZE]) {
     forward_propagation(nn, input);
 
     // Déterminer la classe prédite
-    int predicted_class = 0;
     double max_probability = nn->output_layer[0];
     for (int i = 1; i < OUTPUT_NODES; i++) {
         if (nn->output_layer[i] > max_probability) {
             max_probability = nn->output_layer[i];
-            predicted_class = i;
         }
     }
 
