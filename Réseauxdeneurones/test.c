@@ -36,7 +36,7 @@ int main() {
 
     execute_command("./copy images");
     execute_command("./trie matrice.txt");
-
+    execute_command("./matrice letters.txt matrice.txt");
     // Étape 8 : Exécuter `./reseaux weights output.pgm images`
     execute_command("./reseaux weights output.pgm images");
 
