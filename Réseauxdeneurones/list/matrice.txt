@@ -1,0 +1,1 @@
+letter_line0_col0.pgm: F
