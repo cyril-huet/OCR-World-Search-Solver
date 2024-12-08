@@ -1,5 +1,0 @@
----
-triple:          'arm64-apple-darwin'
-binary-path:     convert_png_to_pgm
-relocations:     []
-...

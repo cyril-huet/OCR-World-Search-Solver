@@ -1,6 +1,9 @@
 # Compiler and flags
 CC = gcc
-CFLAGS = -Wall -Wextra -g -lSDL2 -lSDL2_image -lm  -I/opt/homebrew/Cellar/sdl2_image/2.8.2_2/include/ -L/opt/homebrew/lib
+CFLAGS =  -Werror -Wall -Wextra -g -lSDL2 -lSDL2_image -lm \
+         -I/opt/homebrew/Cellar/sdl2_image/2.8.2_2/include/ \
+         -L/opt/homebrew/lib
+
 # Executables
 EXECUTABLES = a.out exec extraire fin jade parcours parcoursextraire \
               convert_png_to_pgm pgm_to_png png_to_pgm fichier
@@ -68,15 +71,16 @@ fichier: $(SRC_FICHIER)
 
 # Clean up object files and executables
 clean:
-	rm -f *.o $(EXECUTABLES)
-	rm -rf mot_png
-	rm -rf images
-	rm -rf parcours.dSYM
-	rm image.pgm
-	rm output_with_boxes.png
-	rm output_with_boxes.pgm
-	rm rectangles.txt
-	rm -rf *.dSYM
+	rm -f *.o $(EXECUTABLES) 2>/dev/null || true
+	rm -rf mot_png 2>/dev/null || true
+	rm -rf images 2>/dev/null || true
+	rm -rf parcours.dSYM 2>/dev/null || true
+	rm -f image.pgm 2>/dev/null || true
+	rm -f output_with_boxes.png 2>/dev/null || true
+	rm -f output_with_boxes.pgm 2>/dev/null || true
+	rm -f rectangles.txt 2>/dev/null || true
+	rm -rf *.dSYM 2>/dev/null || true
+
 # PHONY targets
 .PHONY: all clean
 
