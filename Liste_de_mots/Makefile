@@ -1,12 +1,13 @@
 # Compiler and flags
 CC = gcc
-CFLAGS =  -Werror -Wall -Wextra -g -lSDL2 -lSDL2_image -lm \
+CFLAGS = -Werror -Wall -Wextra -g -lSDL2 -lSDL2_image -lm \
          -I/opt/homebrew/Cellar/sdl2_image/2.8.2_2/include/ \
          -L/opt/homebrew/lib
 
 # Executables
 EXECUTABLES = a.out exec extraire fin jade parcours parcoursextraire \
-              convert_png_to_pgm pgm_to_png png_to_pgm fichier
+              convert_png_to_pgm pgm_to_png png_to_pgm fichier \
+              charline charline4.1 process_files
 
 # Sources
 SRC_EXTRAIRE = extraire.c
@@ -19,18 +20,9 @@ SRC_PGM_TO_PNG = pgm_to_png.c
 SRC_PNG_TO_PGM = png_to_pgm.c
 SRC_EXEC = exec.c
 SRC_FICHIER = fichier.c
-
-# Object files
-OBJ_EXTRAIRE = $(SRC_EXTRAIRE:.c=.o)
-OBJ_FIN = $(SRC_FIN:.c=.o)
-OBJ_JADE = $(SRC_JADE:.c=.o)
-OBJ_PARCOURS = $(SRC_PARCOURS:.c=.o)
-OBJ_PARCOURSEXTRAIRE = $(SRC_PARCOURSEXTRAIRE:.c=.o)
-OBJ_CONVERT_PNG_TO_PGM = $(SRC_CONVERT_PNG_TO_PGM:.c=.o)
-OBJ_PGM_TO_PNG = $(SRC_PGM_TO_PNG:.c=.o)
-OBJ_PNG_TO_PGM = $(SRC_PNG_TO_PGM:.c=.o)
-OBJ_EXEC = $(SRC_EXEC:.c=.o)
-OBJ_FICHIER = $(SRC_FICHIER:.c=.o)
+SRC_CHARLINE = charline.c
+SRC_CHARLINE4_1 = charline4.1.c
+SRC_PROCESS_FILES = process_files.c
 
 # Default target
 all: $(EXECUTABLES)
@@ -69,6 +61,15 @@ png_to_pgm: $(SRC_PNG_TO_PGM)
 fichier: $(SRC_FICHIER)
 	$(CC) $(CFLAGS) -o $@ $^
 
+charline: $(SRC_CHARLINE)
+	$(CC) $(CFLAGS) -o $@ $^
+
+charline4.1: $(SRC_CHARLINE4_1)
+	$(CC) $(CFLAGS) -o $@ $^
+
+process_files: $(SRC_PROCESS_FILES)
+	$(CC) $(CFLAGS) -o $@ $^
+
 # Clean up object files and executables
 clean:
 	rm -f *.o $(EXECUTABLES) 2>/dev/null || true
@@ -80,7 +81,7 @@ clean:
 	rm -f output_with_boxes.pgm 2>/dev/null || true
 	rm -f rectangles.txt 2>/dev/null || true
 	rm -rf *.dSYM 2>/dev/null || true
-
+	rm mot*
 # PHONY targets
 .PHONY: all clean
 

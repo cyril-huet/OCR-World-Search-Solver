@@ -135,13 +135,14 @@ void merge_adjacent_rectangles(Rectangle *rects, int *rect_count) {
 }
 
 void detect_and_group_words(Image *src, int min_size, int max_size, int padding) {
+    (void)min_size;
+    (void)max_size;
     int *visited = (int *)calloc(src->width * src->height, sizeof(int));
     if (!visited) {
         fprintf(stderr, "Erreur d'allocation mémoire pour la matrice visited.\n");
         exit(1);
     }
-    (void)min_size;
-    (void)max_size;
+
     Rectangle rects[1000];
     int rect_count = 0;
 
@@ -237,4 +238,3 @@ int main(int argc, char *argv[]) {
 
     return 0;
 }
-

@@ -4,70 +4,76 @@
 #include <stdlib.h>
 
 // Fonction pour convertir une image PNG en PGM
-void png_to_pgm(const char *input_file, const char *output_file) {
-    // Initialiser SDL et SDL_image
-    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-        fprintf(stderr, "Erreur : impossible d'initialiser SDL (%s)\n", SDL_GetError());
-        exit(EXIT_FAILURE);
+int convert_image_to_pgm(const char* source_path, const char* dest_path) {
+    // Initialisation de SDL et SDL_Image
+    if (SDL_Init(SDL_INIT_VIDEO) != 0) {
+        fprintf(stderr, "Erreur d'initialisation de SDL : %s\n", SDL_GetError());
+        return -1;
     }
-
-    if (!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG)) {
-        fprintf(stderr, "Erreur : impossible d'initialiser SDL_image pour PNG (%s)\n", IMG_GetError());
+    if (!IMG_Init(IMG_INIT_PNG)) {
+        fprintf(stderr, "Erreur d'initialisation de SDL_Image : %s\n", IMG_GetError());
         SDL_Quit();
-        exit(EXIT_FAILURE);
+        return -1;
     }
 
-    // Charger l'image PNG
-    SDL_Surface *image = IMG_Load(input_file);
+    // Charger l'image source
+    SDL_Surface* image = IMG_Load(source_path);
     if (!image) {
-        fprintf(stderr, "Erreur : impossible de charger l'image %s (%s)\n", input_file, IMG_GetError());
+        fprintf(stderr, "Erreur de chargement de l'image : %s\n", IMG_GetError());
         IMG_Quit();
         SDL_Quit();
-        exit(EXIT_FAILURE);
+        return -1;
     }
 
-    // Vérifier que l'image est en niveau de gris ou convertir
-    if (image->format->BytesPerPixel != 1) {
-        fprintf(stderr, "Erreur : l'image doit être en niveau de gris (1 canal par pixel).\n");
+    // Ouvrir le fichier de destination
+    FILE* output_file = fopen(dest_path, "w");
+    if (!output_file) {
+        fprintf(stderr, "Erreur d'ouverture du fichier de destination\n");
         SDL_FreeSurface(image);
         IMG_Quit();
         SDL_Quit();
-        exit(EXIT_FAILURE);
+        return -1;
     }
 
-    // Ouvrir le fichier de sortie
-    FILE *fp = fopen(output_file, "wb");
-    if (!fp) {
-        fprintf(stderr, "Erreur : impossible d'ouvrir le fichier %s pour écriture.\n", output_file);
-        SDL_FreeSurface(image);
-        IMG_Quit();
-        SDL_Quit();
-        exit(EXIT_FAILURE);
+    // Écrire l'en-tête du fichier PGM
+    fprintf(output_file, "P2\n%d %d\n255\n", image->w, image->h);
+
+    // Convertir chaque pixel en niveau de gris et écrire dans le fichier
+    for (int y = 0; y < image->h; y++) {
+        for (int x = 0; x < image->w; x++) {
+            Uint32 pixel = ((Uint32*)image->pixels)[y * (image->pitch / 4) + x];
+            Uint8 r, g, b;
+            SDL_GetRGB(pixel, image->format, &r, &g, &b);
+
+            // Conversion en niveaux de gris
+            Uint8 gray = (Uint8)(0.3 * r + 0.59 * g + 0.11 * b);
+
+            // Écriture dans le fichier
+            fprintf(output_file, "%d ", gray);
+        }
+        fprintf(output_file, "\n");
     }
 
-    // Écrire l'en-tête PGM
-    fprintf(fp, "P5\n%d %d\n255\n", image->w, image->h);
-
-    // Écrire les pixels dans le fichier PGM
-    fwrite(image->pixels, 1, image->w * image->h, fp);
-
-    // Fermer le fichier et libérer les ressources
-    fclose(fp);
+    // Libération des ressources
+    fclose(output_file);
     SDL_FreeSurface(image);
     IMG_Quit();
     SDL_Quit();
 
-    printf("Conversion réussie : %s -> %s\n", input_file, output_file);
+    return 0;
 }
 
-int main(int argc, char *argv[]) {
-    if (argc != 3) {
-        fprintf(stderr, "Usage : %s <input.png> <output.pgm>\n", argv[0]);
-        return EXIT_FAILURE;
+// Exemple d'utilisation
+int main() {
+    const char* source_path = "image_source.png";
+    const char* dest_path = "image.pgm";
+
+    if (convert_image_to_pgm(source_path, dest_path) == 0) {
+        printf("Conversion réussie !\n");
+    } else {
+        printf("Erreur lors de la conversion.\n");
     }
 
-    png_to_pgm(argv[1], argv[2]);
-
-    return EXIT_SUCCESS;
+    return 0;
 }
 
