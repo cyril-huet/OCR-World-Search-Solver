@@ -6,7 +6,7 @@ CFLAGS = -Wall -Wextra -g
 LIBS = -lSDL2 -lSDL2_image -lm -I/opt/homebrew/Cellar/sdl2_image/2.8.2_2/include/ -L/opt/homebrew/lib
 
 # List of source files
-SOURCES = reseaux.c matrice.c trie.c script.c pngtopgmcharline.c extraction_letter_tric.c charline4.1.c resize.c charline.c colonne.c convert.c convert_png_to_pgm.c copy.c executable.c extraction_de_lettre.c facile.c fichier.c fin.c grid.c parcours.c pgm_to_png.c pgm_to_ppm.c trait.c retirepetit.c
+SOURCES = script_dossier.c facile2.c reseaux.c matrice.c trie.c script.c pngtopgmcharline.c extraction_letter_tric.c charline4.1.c resize.c charline.c colonne.c convert.c convert_png_to_pgm.c copy.c executable.c extraction_de_lettre.c facile.c fichier.c fin.c grid.c parcours.c pgm_to_png.c pgm_to_ppm.c trait.c retirepetit.c
 
 # Generate a list of executables (one per source file)
 EXECUTABLES = $(SOURCES:.c=)

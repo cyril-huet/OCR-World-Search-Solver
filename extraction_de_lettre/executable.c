@@ -96,7 +96,7 @@ int main() {
 
 
     } 
-    if (width == 422) 
+    else if (width == 422) 
     {
 
 
@@ -117,7 +117,7 @@ int main() {
         execute_command("cp image_source.pgm input.pgm");
         execute_command("cp output.pgm image_source.pgm");
         execute_command("magick convert image_source.png -depth 8 image_source.pgm");
-        execute_command("convert image_source.pgm -depth 8 image_source.pgm 2>/dev/null && ./facile image_source.pgm");
+        execute_command("convert image_source.pgm -depth 8 image_source.pgm 2>/dev/null && ./facile2 image_source.pgm");
         
     }
     else 
@@ -136,18 +136,33 @@ int main() {
             execute_command("cp image_source.pgm input.pgm");
             execute_command("./trait");
             execute_command("cp output.pgm image_source.pgm");
-            execute_command("convert image_source.pgm -depth 8 image_source.pgm  2>/dev/null && ./facile image_source.pgm");
+            execute_command("convert image_source.pgm -depth 8 image_source.pgm  2>/dev/null && ./facile2 image_source.pgm");
         } else if (width == 137 || width == 232 || width == 585 || width == 355) {
             execute_command("convert image_source.png image_source.pgm 2>/dev/null");
-            execute_command("convert image_source.pgm -depth 8 image_source.pgm 2>/dev/null && ./facile image_source.pgm");
+            execute_command("convert image_source.pgm -depth 8 image_source.pgm 2>/dev/null && ./facile2 image_source.pgm");
         } else if (width == 350) {
-            execute_command("convert image_source.png -depth 8 image_source.pgm 2>/dev/null");
-            execute_command("convert image_source.png image.pgm 2>/dev/null");
-            execute_command("convert image.pgm -depth 8 image.pgm 2>/dev/null");
-            execute_command("./fichier image.pgm");
-            execute_command("convert output_with_boxes.pgm  -depth 8 input.pgm 2>/dev/null");
+
+
+
+
+
+
+            execute_command("convert list_only.png image_source.pgm");
+            execute_command("./fichier image_source.pgm");
+            execute_command("cp output_with_boxes.pgm input.pgm");
             execute_command("./charline");
-            execute_command("convert image_source.pgm -depth 8 image_source.pgm 2>/dev/null && ./facile output.pgm");
+            execute_command("convert output.pgm output_with_boxes.png 2>/dev/null");
+            execute_command("./fin");
+            execute_command("./convert_png_to_pgm mot_png Jade");
+            // A REFAIRE !!!! execute_command("./extraction_letter_tric Jade images");
+            
+
+
+            execute_command("./script_dossier");
+            execute_command("mv Jade/images .");
+
+
+
             execute_command("./extraction_de_lettre grid_only.pgm");
             execute_command("./parcours"); 
             execute_command("./pgm_to_ppm");
@@ -155,6 +170,29 @@ int main() {
             execute_command("./grid grid_only.ppm");
             execute_command("./colonne output_with_boxes.ppm");
             execute_command("./copy images");
+            printf("%s", "reussi");
+
+
+
+
+
+
+
+
+            //execute_command("convert image_source.png -depth 8 image_source.pgm 2>/dev/null");
+            //execute_command("convert image_source.png image.pgm 2>/dev/null");
+            //execute_command("convert image.pgm -depth 8 image.pgm 2>/dev/null");
+            //execute_command("./fichier image.pgm");
+            //execute_command("convert output_with_boxes.pgm  -depth 8 input.pgm 2>/dev/null");
+            //execute_command("./charline");
+            //execute_command("convert image_source.pgm -depth 8 image_source.pgm 2>/dev/null && ./facile2 output.pgm");
+            //execute_command("./extraction_de_lettre grid_only.pgm");
+            //execute_command("./parcours"); 
+            //execute_command("./pgm_to_ppm");
+            //execute_command("./convert");
+            //execute_command("./grid grid_only.ppm");
+            //execute_command("./colonne output_with_boxes.ppm");
+            // execute_command("./copy images");
         } else {
             execute_command("convert image_source.png image.pgm 2>/dev/null");
             execute_command("./fichier image.pgm");
@@ -162,7 +200,7 @@ int main() {
             execute_command("./fin");
             execute_command("./convert_png_to_pgm images images");
             execute_command("mv mot_png/* .");
-            execute_command("./parcoursextraire");
+            execute_command("./parcours");
             execute_command("./process_files");
             execute_command("./parcours");
             execute_command("./convert");
@@ -172,7 +210,7 @@ int main() {
         process_directory(image_directory);
     }
     execute_command("./convert_png_to_pgm images images");
-    execute_command("rm images/*.png");
+    execute_command("rm -f images/*.png");
     //execute_command("./grid grid_only.ppm");
 
     // Étape 7 : Exécuter `./colonne output_with_boxes.ppm`
